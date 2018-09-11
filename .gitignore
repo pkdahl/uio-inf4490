@@ -5,3 +5,5 @@ group_teachers*
 *inf3490*.pdf
 *INF3490*.pdf
 *__pycache__*
+.pytest_cache/
+.py37/
