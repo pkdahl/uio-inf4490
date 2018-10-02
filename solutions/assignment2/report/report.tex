@@ -1,0 +1,259 @@
+\documentclass[a4paper]{article}
+
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{subcaption}
+
+\title{INF4490 Mandatory assignment 2: \\
+  Multilayer Percepton}
+\author{Per Kulseth Dahl \\ {\tt pkdahl}}
+\date{15 October 2018}
+
+\begin{document}
+
+\maketitle
+
+The code in this assignment is made with Python~3.7.
+Preliminary code in the file movements.py depends on numpy.
+Other than that there are no dependencies outside of Python 3
+standard library.
+
+The iterative neural net will be trained with 6, 8 and 12 nodes in
+the hidden layer and the corresponding confusion matrices will
+presented by running {\tt python movements.py}.
+
+The k-fold cross-validation will be run with 10 folds by runnning
+{\tt python cross\_validation.py}.
+
+\section*{Iterative neural net}
+
+The neural net was run with an $\eta$ of 0.1 and 100 iterations
+in each epoch. The training is stopped when the improvement drops
+below 0.1\% when error is compared with the error in the previous
+epoch.
+
+The confusion matrices from the neural networks with 6, 8 and 12
+nodes in the hidden layer is presented in table~\ref{tab:cm}
+
+\begin{table}[h]
+  \centering
+  \begin{subtable}{0.6\textwidth}
+    \centering
+    \begin{tabular}{r|rrrrrrrr}
+      &  0 &  1 &  2 &  3 &  4 &  5 &  6 &  7 \\
+      \hline
+      0 & 13 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
+      1 &  0 & 14 &  0 &  0 &  0 &  0 &  0 &  0 \\
+      2 &  1 &  0 & 14 &  0 &  0 &  0 &  0 &  0 \\
+      3 &  0 &  0 &  0 & 10 &  0 &  0 &  0 &  0 \\
+      4 &  0 &  0 &  0 &  0 & 16 &  1 &  0 &  0 \\
+      5 &  0 &  0 &  0 &  0 &  0 & 15 &  0 &  0 \\
+      6 &  0 &  0 &  1 &  2 &  0 &  0 & 13 &  0 \\
+      7 &  0 &  0 &  1 &  0 &  0 &  0 &  0 & 10 \\
+      \hline
+      \multicolumn{9}{c}{94.59\% correctly classified}
+    \end{tabular}
+    \label{tab:h6}
+    \caption{6 nodes}
+  \end{subtable}
+
+  \begin{subtable}{0.6\textwidth}
+    \centering
+    \begin{tabular}{r|rrrrrrrr}
+      &  0 &  1 &  2 &  3 &  4 &  5 &  6 &  7 \\
+      \hline
+      0 & 12 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
+      1 &  0 & 14 &  0 &  0 &  0 &  0 &  0 &  0 \\
+      2 &  0 &  0 & 15 &  0 &  0 &  0 &  0 &  0 \\
+      3 &  0 &  0 &  0 & 12 &  0 &  0 &  0 &  0 \\
+      4 &  1 &  0 &  0 &  0 & 16 &  1 &  0 &  0 \\
+      5 &  0 &  0 &  0 &  0 &  0 & 15 &  0 &  0 \\
+      6 &  0 &  0 &  1 &  0 &  0 &  0 & 13 &  0 \\
+      7 &  1 &  0 &  0 &  0 &  0 &  0 &  0 & 10 \\
+      \hline
+      \multicolumn{9}{c}{96.40\% correctly classified}
+    \end{tabular}
+    \caption{8 nodes}
+  \end{subtable}
+
+  \begin{subtable}{0.6\textwidth}
+    \centering
+    \begin{tabular}{r|rrrrrrrr}
+      & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+      \hline
+      0 & 12 &  0 &  0 &  0 &  0 &  1 &  0 &  0 \\
+      1 &  0 & 14 &  0 &  0 &  0 &  0 &  0 &  0 \\
+      2 &  0 &  0 & 14 &  0 &  0 &  0 &  0 &  0 \\
+      3 &  0 &  0 &  0 & 10 &  0 &  0 &  0 &  0 \\
+      4 &  1 &  0 &  0 &  2 & 16 &  0 &  0 &  0 \\
+      5 &  0 &  0 &  0 &  0 &  0 & 15 &  0 &  0 \\
+      6 &  0 &  0 &  2 &  0 &  0 &  0 & 13 &  0 \\
+      7 &  1 &  0 &  0 &  0 &  0 &  0 &  0 & 10 \\
+      \hline
+      \multicolumn{9}{c}{93.69\% correctly classified}
+    \end{tabular}
+    \caption{12 nodes}
+  \end{subtable}
+
+  \caption{Results with (a) 6, (b) 8 and (c) 12 nodes in
+    the hidden layer.}
+    \label{tab:cm}
+\end{table}
+
+\section*{k-fold cross-validation}
+
+10-fold cross-validation was run with an $\eta$ of 0.2 and
+with 50 iterations in each epoch. Again the training was stopped
+when the iprovement between epochs was less than 0.1\%.
+
+The percent classified correctly on the different folds are
+presented in table~\ref{tab:cp}. The index of the fold used
+for verification is along columns and the index of the fold
+used for testing are the rows.
+
+On average 92.86\% was classified correctly with a
+standard deviation of 3.88.
+
+\begin{table}
+  \centering
+  \begin{tabular}{r|rrrrrrrrrr}
+      & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+    \hline
+    0 &       &  97.73 &  93.18 & 97.73 & 93.18 & 88.64 & 86.36 & 95.45 & 86.36 & 94.12 \\
+    1 & 97.73 &        &  93.18 & 95.45 & 90.91 & 88.64 & 90.91 & 90.91 & 95.45 & 96.08 \\
+    2 & 90.91 &  95.45 &        & 95.45 & 90.91 & 93.18 & 86.36 & 93.18 & 86.36 & 94.12 \\
+    3 & 93.18 &  97.73 &  95.45 &       & 90.91 & 88.64 & 86.36 & 93.18 & 95.45 & 96.08 \\
+    4 & 97.73 &  88.64 &  93.18 & 93.18 &       & 93.18 & 93.18 & 93.18 & 93.18 & 98.04 \\
+    5 & 84.09 &  88.63 & 100.00 & 90.91 & 93.18 &       & 84.09 & 93.18 & 81.82 & 88.24 \\
+    6 & 93.18 & 100.00 &  93.18 & 95.45 & 95.45 & 90.91 &       & 95.45 & 90.91 & 94.12 \\
+    7 & 95.45 &  97.72 &  97.72 & 90.91 & 97.73 & 93.18 & 90.91 &       & 97.73 & 98.04 \\
+    8 & 97.73 &  95.45 &  93.18 & 93.18 & 90.91 & 88.64 & 88.64 & 93.18 &       & 94.12 \\
+    9 & 95.45 &  90.91 &  97.73 & 97.73 & 90.91 & 86.36 & 90.91 & 95.45 & 86.36 \\
+  \end{tabular}
+  \caption{Percent of movements correctly classified}
+  \label{tab:cp}
+\end{table}
+
+
+\end{document}
+
+it = 50 | eta = 0.2
+valid test correct_pct error improvement
+0 1 97.72727272727273 -- epochs: 138 -- error: 0.09746 -- improvement: 0.09517 --
+0 2 93.18181818181817 -- epochs: 111 -- error: 0.11237 -- improvement: 0.09584 --
+0 3 97.72727272727273 -- epochs:  84 -- error: 0.09305 -- improvement: 0.08939 --
+0 4 93.18181818181817 -- epochs:  13 -- error: 0.24244 -- improvement: 0.09739 --
+0 5 88.63636363636364 -- epochs: 103 -- error: 0.11755 -- improvement: 0.09535 --
+0 6 86.36363636363636 -- epochs:  96 -- error: 0.12266 -- improvement: 0.09650 --
+0 7 95.45454545454545 -- epochs:  62 -- error: 0.11646 -- improvement: 0.09549 --
+0 8 86.36363636363636 -- epochs: 123 -- error: 0.11669 -- improvement: 0.09945 --
+0 9 94.11764705882352 -- epochs: 197 -- error: 0.08704 -- improvement: 0.09995 --
+1 0 97.72727272727273 -- epochs: 131 -- error: 0.09273 -- improvement: 0.09925 --
+1 2 93.18181818181817 -- epochs: 122 -- error: 0.09055 -- improvement: 0.09852 --
+1 3 95.45454545454545 -- epochs:  76 -- error: 0.08865 -- improvement: 0.09976 --
+1 4 90.9090909090909  -- epochs:  89 -- error: 0.09987 -- improvement: 0.09666 --
+1 5 88.63636363636364 -- epochs:  69 -- error: 0.09335 -- improvement: 0.09625 --
+1 6 90.9090909090909  -- epochs: 239 -- error: 0.05744 -- improvement: 0.09458 --
+1 7 90.9090909090909  -- epochs: 175 -- error: 0.08644 -- improvement: 0.09725 --
+1 8 95.45454545454545 -- epochs: 101 -- error: 0.07836 -- improvement: 0.09865 --
+1 9 96.07843137254902 -- epochs: 121 -- error: 0.08893 -- improvement: 0.09251 -- kl 10.50
+2 0 90.9090909090909  -- epochs:  66 -- error: 0.12094 -- improvement: 0.08362 --
+2 1 95.45454545454545 -- epochs:  93 -- error: 0.09170 -- improvement: 0.09954 -- kl 11:04
+2 1 95.45454545454545 -- epochs:  93 -- error: 0.09170 -- improvement: 0.09954 --
+2 3 95.45454545454545 -- epochs: 119 -- error: 0.10941 -- improvement: 0.09698 --
+2 4 90.9090909090909  -- epochs: 118 -- error: 0.07976 -- improvement: 0.09899 --
+2 5 93.18181818181817 -- epochs: 199 -- error: 0.09260 -- improvement: 0.09953 --
+2 6 86.36363636363636 -- epochs: 108 -- error: 0.09694 -- improvement: 0.09196 --
+2 7 93.18181818181817 -- epochs: 105 -- error: 0.13461 -- improvement: 0.09967 --
+2 8 86.36363636363636 -- epochs: 150 -- error: 0.09923 -- improvement: 0.09953 --
+2 9 94.11764705882352 -- epochs: 148 -- error: 0.09441 -- improvement: 0.09902 --
+3 0 93.18181818181817 -- epochs: 118 -- error: 0.12402 -- improvement: 0.09807 --
+3 1 97.72727272727273 -- epochs: 134 -- error: 0.10305 -- improvement: 0.09962 --
+3 2 95.45454545454545 -- epochs: 114 -- error: 0.09693 -- improvement: 0.09327 --
+3 4 90.9090909090909  -- epochs:  91 -- error: 0.12927 -- improvement: 0.09127 --
+3 5 88.63636363636364 -- epochs: 193 -- error: 0.09004 -- improvement: 0.09924 -- kl 13:19
+3 6 86.36363636363636 -- epochs: 103 -- error: 0.10217 -- improvement: 0.09995 -- kl 13:29
+3 7 93.18181818181817 -- epochs:  88 -- error: 0.11484 -- improvement: 0.09881 --
+3 8 95.45454545454545 -- epochs: 250 -- error: 0.08874 -- improvement: 0.09775 --
+3 9 96.07843137254902 -- epochs:  86 -- error: 0.10990 -- improvement: 0.08991 --
+4 0 97.72727272727273 -- epochs: 134 -- error: 0.08882 -- improvement: 0.09915 --
+4 1 88.63636363636364 -- epochs:  11 -- error: 0.22790 -- improvement: 0.02168 --
+4 2 93.18181818181817 -- epochs:  76 -- error: 0.11734 -- improvement: 0.08537 --
+4 3 93.18181818181817 -- epochs:  10 -- error: 0.22948 -- improvement: 0.08303 --
+4 5 93.18181818181817 -- epochs: 130 -- error: 0.10386 -- improvement: 0.09948 --
+4 6 93.18181818181817 -- epochs: 230 -- error: 0.08412 -- improvement: 0.09928 --
+4 7 93.18181818181817 -- epochs:  83 -- error: 0.12644 -- improvement: 0.09899 --
+4 8 93.18181818181817 -- epochs:  89 -- error: 0.10380 -- improvement: 0.09702 --
+4 9 98.0392156862745  -- epochs: 102 -- error: 0.11310 -- improvement: 0.09997 --
+5 0 84.0909090909091  -- epochs:  11 -- error: 0.24188 -- improvement: 0.04249 --
+5 1 88.63636363636364 -- epochs:  10 -- error: 0.24326 -- improvement: 0.07716 -- kl 15:15
+5 2 100.0             -- epochs:  71 -- error: 0.11822 -- improvement: 0.09631 --
+5 3 90.9090909090909  -- epochs:  10 -- error: 0.24072 -- improvement: 0.06108 --
+5 4 93.18181818181817 -- epochs:  10 -- error: 0.24100 -- improvement: 0.08890 --
+5 6 84.0909090909091  -- epochs:   9 -- error: 0.24003 -- improvement: -0.01518 --
+5 7 93.18181818181817 -- epochs:  11 -- error: 0.23894 -- improvement: 0.05169 --
+5 8 81.81818181818183 -- epochs:   9 -- error: 0.24349 -- improvement: -0.04616 --
+5 9 88.23529411764706 -- epochs:  11 -- error: 0.23857 -- improvement: 0.05101 -- kl 15:25
+6 0 93.18181818181817 -- epochs: 170 -- error: 0.10194 -- improvement: 0.09908 --
+6 1 100.0             -- epochs: 120 -- error: 0.09550 -- improvement: 0.09389 --
+6 2 93.18181818181817 -- epochs:  94 -- error: 0.14283 -- improvement: 0.09928 --
+6 3 95.45454545454545 -- epochs:  86 -- error: 0.13027 -- improvement: 0.09764 --
+6 4 95.45454545454545 -- epochs: 168 -- error: 0.09345 -- improvement: 0.09916 --
+6 5 90.9090909090909  -- epochs: 102 -- error: 0.15096 -- improvement: 0.09630 --
+6 7 95.45454545454545 -- epochs: 144 -- error: 0.10936 -- improvement: 0.09447 --
+6 8 90.9090909090909  -- epochs: 114 -- error: 0.12426 -- improvement: 0.09330 --
+6 9 94.11764705882352 -- epochs: 173 -- error: 0.09569 -- improvement: 0.09914 --
+7 0 95.45454545454545 -- epochs:  87 -- error: 0.07971 -- improvement: 0.09975 --
+7 1 97.72727272727273 -- epochs: 110 -- error: 0.08878 -- improvement: 0.09598 --
+7 2 97.72727272727273 -- epochs: 104 -- error: 0.09158 -- improvement: 0.09931 -- kl 17.25
+7 3 90.9090909090909  -- epochs: 119 -- error: 0.06699 -- improvement: 0.09456 --
+7 4 97.72727272727273 -- epochs: 264 -- error: 0.06261 -- improvement: 0.09933 --
+7 5 93.18181818181817 -- epochs: 142 -- error: 0.08473 -- improvement: 0.09463 --
+7 6 90.9090909090909  -- epochs: 122 -- error: 0.08429 -- improvement: 0.09998 --
+7 8 97.72727272727273 -- epochs:  94 -- error: 0.07919 -- improvement: 0.09743 --
+7 9 98.0392156862745  -- epochs: 122 -- error: 0.08803 -- improvement: 0.09974 --
+8 0 97.72727272727273 -- epochs: 137 -- error: 0.11263 -- improvement: 0.09764 --
+8 1 95.45454545454545 -- epochs: 193 -- error: 0.09904 -- improvement: 0.09846 --
+8 2 93.18181818181817 -- epochs: 136 -- error: 0.12130 -- improvement: 0.09987 --
+8 3 93.18181818181817 -- epochs: 112 -- error: 0.11069 -- improvement: 0.09444 --
+8 4 90.9090909090909  -- epochs:  94 -- error: 0.13030 -- improvement: 0.09735 --
+8 5 88.63636363636364 -- epochs: 137 -- error: 0.10558 -- improvement: 0.09950 --
+8 6 88.63636363636364 -- epochs: 193 -- error: 0.10121 -- improvement: 0.09921 --
+8 7 93.18181818181817 -- epochs: 132 -- error: 0.11351 -- improvement: 0.09939 --
+8 9 94.11764705882352 -- epochs: 121 -- error: 0.10503 -- improvement: 0.09800 --
+9 0 95.45454545454545 -- epochs: 132 -- error: 0.08162 -- improvement: 0.09808 --
+9 1 90.9090909090909  -- epochs: 172 -- error: 0.07330 -- improvement: 0.09865 --
+9 2 97.72727272727273 -- epochs: 134 -- error: 0.07894 -- improvement: 0.09979 --
+9 3 97.72727272727273 -- epochs: 110 -- error: 0.09042 -- improvement: 0.09774 --
+9 4 90.9090909090909  -- epochs:  91 -- error: 0.08902 -- improvement: 0.08676 --
+9 5 86.36363636363636 -- epochs: 123 -- error: 0.08700 -- improvement: 0.09953 --
+9 6 90.9090909090909  -- epochs: 183 -- error: 0.07770 -- improvement: 0.09747 --
+9 7 95.45454545454545 -- epochs: 151 -- error: 0.06916 -- improvement: 0.09731 --
+9 8 86.36363636363636 -- epochs: 146 -- error: 0.08393 -- improvement: 0.09298 --
+
+[97.72727272727273, 93.18181818181817, 97.72727272727273, 93.18181818181817,
+ 88.63636363636364, 86.36363636363636, 95.45454545454545, 86.36363636363636,
+ 94.11764705882352, 97.72727272727273, 93.18181818181817, 95.45454545454545,
+ 90.9090909090909, 88.63636363636364, 90.9090909090909, 90.9090909090909,
+ 95.45454545454545, 96.07843137254902, 90.9090909090909, 95.45454545454545,
+ 95.45454545454545, 90.9090909090909, 93.18181818181817, 86.36363636363636,
+ 93.18181818181817, 86.36363636363636, 94.11764705882352, 93.18181818181817,
+ 97.72727272727273, 95.45454545454545, 90.9090909090909, 88.63636363636364,
+ 86.36363636363636, 93.18181818181817, 95.45454545454545, 96.07843137254902,
+ 97.72727272727273, 88.63636363636364, 93.18181818181817, 93.18181818181817,
+ 93.18181818181817, 93.18181818181817, 93.18181818181817, 93.18181818181817,
+ 98.0392156862745, 84.0909090909091, 88.63636363636364, 100.0, 90.9090909090909,
+ 93.18181818181817, 84.0909090909091, 93.18181818181817, 81.81818181818183,
+ 88.23529411764706, 93.18181818181817, 100.0, 93.18181818181817,
+ 95.45454545454545, 95.45454545454545, 90.9090909090909, 95.45454545454545,
+ 90.9090909090909, 94.11764705882352, 95.45454545454545, 97.72727272727273,
+ 97.72727272727273, 90.9090909090909, 97.72727272727273, 93.18181818181817,
+ 90.9090909090909, 97.72727272727273, 98.0392156862745, 97.72727272727273,
+ 95.45454545454545, 93.18181818181817, 93.18181818181817, 90.9090909090909,
+ 88.63636363636364, 88.63636363636364, 93.18181818181817, 94.11764705882352,
+ 95.45454545454545, 90.9090909090909, 97.72727272727273, 97.72727272727273,
+ 90.9090909090909, 86.36363636363636, 90.9090909090909, 95.45454545454545,
+ 86.36363636363636]
+Mean: 92.86096256684492
+Standard deviation: 3.8771014598949085

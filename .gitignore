@@ -1,4 +1,6 @@
 *.latex*
+*.aux
+*.log
 .DS_Store
 *_minted*
 group_teachers*
